@@ -3,7 +3,6 @@ package com.example.lesson
 import android.app.Activity
 import android.os.Bundle
 import android.view.View
-import androidx.appcompat.app.AppCompatActivity
 import com.example.lesson.databinding.ActivityMainBinding
 
 
@@ -23,7 +22,17 @@ class MainActivity : Activity(), MainView {
         setContentView(vb.root)
 
         val listener = View.OnClickListener {
-            presenter.counterClick(it.id)
+            when (it.id) {
+                R.id.btn_counter1 -> {
+                    presenter.counterClick(0)
+                }
+                R.id.btn_counter2 -> {
+                    presenter.counterClick(1)
+                }
+                R.id.btn_counter3 -> {
+                    presenter.counterClick(2)
+                }
+            }
         }
 
         vb.btnCounter1.setOnClickListener(listener)
