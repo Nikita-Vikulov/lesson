@@ -1,0 +1,67 @@
+package com.example.lesson.presentation
+
+
+import androidx.core.os.bundleOf
+import com.example.lesson.model.GithubUser
+import com.example.lesson.model.GithubUsersRepo
+import com.example.lesson.screens.AndroidScreens
+import com.example.lesson.view.UserItemView
+import com.example.lesson.view.ui.UsersFragment
+import com.example.lesson.view.ui.UsersView
+import moxy.MvpPresenter
+import ru.terrakok.cicerone.Router
+
+class UsersPresenter(
+    val usersRepo: GithubUsersRepo,
+    val router: Router
+) : MvpPresenter<UsersView>() {
+
+    class UsersListPresenter : IUserListPresenter {
+
+        val users = mutableListOf<GithubUser>()
+
+        override var itemClickListener: ((UserItemView) -> Unit)? = null
+
+        override fun getCount(): Int = users.size
+
+        override fun bindView(view: UserItemView) {
+            val user = users[view.pos]
+            view.showLogin(user.login)
+        }
+    }
+
+    val usersListPresenter = UsersListPresenter()
+
+    override fun onFirstViewAttach() {
+        super.onFirstViewAttach()
+
+        viewState.init()
+        loadData()
+
+        usersListPresenter.itemClickListener = { itemView ->
+            val screen = AndroidScreens.UsersScreen(usersListPresenter.users[itemView.pos]).apply {
+                fragment.arguments?.putParcelable("USER_GIT", usersListPresenter.users[itemView.pos])
+            }
+            router.navigateTo(screen)
+
+        }
+    }
+
+    fun loadData() {
+        val users = usersRepo.getUsers()
+        usersListPresenter.users.addAll(users)
+        viewState.updateList()
+    }
+
+    fun backPressed(): Boolean {
+        router.exit()
+        return true
+    }
+
+    companion object{
+        fun newInstance(s: GithubUser): UsersFragment {
+            return UsersFragment().apply { arguments = bundleOf(KEY_ARG to s) }
+        }
+        private const val KEY_ARG = "KET_ARG"
+    }
+}
