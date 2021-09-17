@@ -1,12 +1,17 @@
 package com.example.lesson
 
-class MainPresenter(
-    private val view: MainView,
-    private val model: CountersModel
-) {
+import com.example.lesson.screens.AndroidScreens
+import moxy.MvpPresenter
+import ru.terrakok.cicerone.Router
 
-    fun counterClick(index: Int) {
-        val nextCount = model.next(index)
-        view.setButtonText(index, nextCount.toString())
+class MainPresenter(private val router: Router) : MvpPresenter<MainView>() {
+
+    override fun onFirstViewAttach() {
+        super.onFirstViewAttach()
+        router.replaceScreen(AndroidScreens.UsersScreen("привет"))
+    }
+
+    fun backPressed() {
+        router.exit()
     }
 }
