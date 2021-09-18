@@ -1,24 +1,20 @@
 package com.example.lesson
 
-class MainPresenter(
-    private val view: MainView,
-    private val model: CountersModel
-) {
+import android.os.Bundle
+import com.example.lesson.presentation.UsersPresenter
+import com.example.lesson.screens.AndroidScreens
+import com.example.lesson.view.ui.UsersFragment
+import moxy.MvpPresenter
+import ru.terrakok.cicerone.Router
 
-    fun counterClick(id: Int) = when (id) {
-        R.id.btn_counter1 -> {
-            val nextValue = model.next(0)
-            view.setButtonText(0, nextValue.toString())
-        }
-        R.id.btn_counter2 -> {
-            val nextValue = model.next(1)
-            view.setButtonText(1, nextValue.toString())
-        }
-        R.id.btn_counter3 -> {
-            val nextValue = model.next(2)
-            view.setButtonText(2, nextValue.toString())
-        }
-        else -> throw IllegalStateException("Такого индекса нет")
+class MainPresenter(private val router: Router) : MvpPresenter<MainView>() {
+
+    override fun onFirstViewAttach() {
+        super.onFirstViewAttach()
+        router.replaceScreen(AndroidScreens.UsersScreen())
     }
 
+    fun backPressed() {
+        router.exit()
+    }
 }

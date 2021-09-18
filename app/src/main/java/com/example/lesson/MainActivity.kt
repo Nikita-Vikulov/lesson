@@ -1,15 +1,20 @@
 package com.example.lesson
 
-import android.app.Activity
 import android.os.Bundle
-import android.view.View
-import androidx.appcompat.app.AppCompatActivity
 import com.example.lesson.databinding.ActivityMainBinding
+import com.example.lesson.view.BackButtonListener
+import moxy.MvpAppCompatActivity
+import moxy.ktx.moxyPresenter
+import ru.terrakok.cicerone.android.support.SupportAppNavigator
 
 
-class MainActivity : Activity(), MainView {
+class MainActivity : MvpAppCompatActivity(), MainView {
 
-    private val presenter = MainPresenter(this, CountersModel())
+    private val navigator = SupportAppNavigator(this, R.id.container)
+
+    private val presenter by moxyPresenter {
+        MainPresenter(App.instance.router)
+    }
 
     private var _vb: ActivityMainBinding? = null
 
@@ -21,21 +26,24 @@ class MainActivity : Activity(), MainView {
 
         _vb = ActivityMainBinding.inflate(layoutInflater)
         setContentView(vb.root)
-
-        val listener = View.OnClickListener {
-            presenter.counterClick(it.id)
-        }
-
-        vb.btnCounter1.setOnClickListener(listener)
-        vb.btnCounter2.setOnClickListener(listener)
-        vb.btnCounter3.setOnClickListener(listener)
     }
 
-    override fun setButtonText(index: Int, text: String) {
-        when (index) {
-            0 -> vb.btnCounter1.text = text
-            1 -> vb.btnCounter2.text = text
-            2 -> vb.btnCounter3.text = text
+    override fun onResumeFragments() {
+        super.onResumeFragments()
+        App.instance.navigationHolder.setNavigator(navigator)
+    }
+
+    override fun onPause() {
+        super.onPause()
+        App.instance.navigationHolder.removeNavigator()
+    }
+
+    override fun onBackPressed() {
+        supportFragmentManager.fragments.forEach {
+            if (it is BackButtonListener && it.backPressed()) {
+                return
+            }
         }
+        presenter.backPressed()
     }
 }
