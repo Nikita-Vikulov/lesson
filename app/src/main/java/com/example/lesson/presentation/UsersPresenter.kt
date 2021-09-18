@@ -1,6 +1,7 @@
 package com.example.lesson.presentation
 
 
+import android.os.Bundle
 import com.example.lesson.model.GithubUser
 import com.example.lesson.model.GithubUsersRepo
 import com.example.lesson.screens.AndroidScreens
@@ -9,10 +10,7 @@ import com.example.lesson.view.ui.UsersView
 import moxy.MvpPresenter
 import ru.terrakok.cicerone.Router
 
-class UsersPresenter(
-    private val usersRepo: GithubUsersRepo,
-    private val router: Router
-) : MvpPresenter<UsersView>() {
+class UsersPresenter(private val usersRepo: GithubUsersRepo, private val router: Router) : MvpPresenter<UsersView>() {
 
     class UsersListPresenter : IUserListPresenter {
 
@@ -37,8 +35,8 @@ class UsersPresenter(
         loadData()
 
         usersListPresenter.itemClickListener = { itemView ->
-           val screen = AndroidScreens.UsersScreen(String()).apply {
-                fragment.arguments?.putParcelable("USER_GIT", usersListPresenter.users[itemView.pos])
+           val screen = AndroidScreens.UsersScreen(Bundle()).apply {
+                fragment?.arguments?.putParcelable("USER_GIT", usersListPresenter.users[itemView.pos])
             }
             router.navigateTo(screen)
         }

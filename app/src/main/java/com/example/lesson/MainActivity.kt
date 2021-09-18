@@ -3,7 +3,6 @@ package com.example.lesson
 import android.os.Bundle
 import com.example.lesson.databinding.ActivityMainBinding
 import com.example.lesson.view.BackButtonListener
-import com.example.lesson.view.ui.UsersFragment
 import moxy.MvpAppCompatActivity
 import moxy.ktx.moxyPresenter
 import ru.terrakok.cicerone.android.support.SupportAppNavigator
