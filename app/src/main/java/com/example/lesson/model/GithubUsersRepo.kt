@@ -1,6 +1,5 @@
 package com.example.lesson.model
 
-import com.example.lesson.model.GithubUser
 
 class GithubUsersRepo {
 

@@ -1,12 +1,10 @@
 package com.example.lesson.view.ui
 
-import android.os.Binder
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.example.lesson.App
 import com.example.lesson.databinding.FragmentUsersBinding
 import com.example.lesson.databinding.ItemUserBinding
@@ -36,27 +34,38 @@ class UsersFragment : MvpAppCompatFragment(), UsersView, BackButtonListener {
         }
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        return FragmentUsersBinding.inflate(inflater, container, false).also {
-            vb = it
-        }.root
+//    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+//        return FragmentUsersBinding.inflate(inflater, container, false).also {
+//            vb = it
+//        }.root
+//    }
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        binding = ItemUserBinding.inflate(inflater, container, false)
+        vb = FragmentUsersBinding.inflate(inflater, container, false)
+        return vb?.root
+        return binding?.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val gituser = arguments?.getParcelable<GithubUser>("USER_GIT")
-        binding?.tvLogin?.text = gituser?.login
+        val gitUser = arguments?.getParcelable<GithubUser>("USER_GIT")
+        binding?.tvLogin?.text = gitUser?.login
     }
 
     override fun init() {
         vb?.rvUsers?.layoutManager = LinearLayoutManager(requireContext())
         vb?.rvUsers?.adapter = adapter
-/*
-        Toast.makeText(
-            requireContext(),
-            requireArguments().getString(KEY_ARG),
-            Toast.LENGTH_SHORT
-        ).show()*/
+
+//        Toast.makeText(
+//            requireContext(),
+//            requireArguments().getString(KEY_ARG),
+//            Toast.LENGTH_SHORT
+//        ).show()
     }
 
 
@@ -67,17 +76,19 @@ class UsersFragment : MvpAppCompatFragment(), UsersView, BackButtonListener {
     override fun onDestroyView() {
         super.onDestroyView()
         vb = null
+        binding = null
     }
 
     override fun backPressed(): Boolean {
         return presenter.backPressed()
     }
-  /*  companion object{
-        fun newInstance(s: String): UsersFragment {
-            return UsersFragment().apply {
-                arguments = bundleOf(KEY_ARG to s) }
-        }
-        private const val KEY_ARG = "KET_ARG"
-    }*/
+
+//    companion object{
+//        fun newInstance(bundle: Bundle): UsersFragment {
+//            return UsersFragment().apply {
+//                arguments = bundleOf(USER_GIT to bundle) }
+//        }
+//        private const val USER_GIT = "USER_GIT"
+//    }
 
 }
