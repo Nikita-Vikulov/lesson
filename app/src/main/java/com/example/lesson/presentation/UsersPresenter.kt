@@ -28,6 +28,7 @@ class UsersPresenter(private val usersRepo: GithubUsersRepo, private val router:
 
     val usersListPresenter = UsersListPresenter()
 
+
     override fun onFirstViewAttach() {
         super.onFirstViewAttach()
 
@@ -36,7 +37,7 @@ class UsersPresenter(private val usersRepo: GithubUsersRepo, private val router:
 
         usersListPresenter.itemClickListener = { itemView ->
            val screen = AndroidScreens.UsersScreen(Bundle()).apply {
-                fragment?.arguments?.putParcelable("USER_GIT", usersListPresenter.users[itemView.pos])
+                fragment.arguments?.putParcelable("USER_GIT", usersListPresenter.users[itemView.pos])
             }
             router.navigateTo(screen)
         }

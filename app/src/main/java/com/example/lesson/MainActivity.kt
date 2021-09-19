@@ -23,7 +23,6 @@ class MainActivity : MvpAppCompatActivity(), MainView {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         _vb = ActivityMainBinding.inflate(layoutInflater)
         setContentView(vb.root)
     }
