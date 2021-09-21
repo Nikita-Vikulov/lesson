@@ -10,7 +10,7 @@ import com.example.lesson.view.ui.UsersView
 import moxy.MvpPresenter
 import ru.terrakok.cicerone.Router
 
-class UsersPresenter(private val usersRepo: GithubUsersRepo, private val router: Router) : MvpPresenter<UsersView>() {
+class UsersPresenter(val usersRepo: GithubUsersRepo, val router: Router) : MvpPresenter<UsersView>() {
 
     class UsersListPresenter : IUserListPresenter {
 
@@ -28,7 +28,6 @@ class UsersPresenter(private val usersRepo: GithubUsersRepo, private val router:
 
     val usersListPresenter = UsersListPresenter()
 
-
     override fun onFirstViewAttach() {
         super.onFirstViewAttach()
 
@@ -36,14 +35,14 @@ class UsersPresenter(private val usersRepo: GithubUsersRepo, private val router:
         loadData()
 
         usersListPresenter.itemClickListener = { itemView ->
-           val screen = AndroidScreens.UsersScreen(Bundle()).apply {
+            val screen = AndroidScreens.MainScreen(Bundle()).apply {
                 fragment.arguments?.putParcelable("USER_GIT", usersListPresenter.users[itemView.pos])
             }
             router.navigateTo(screen)
         }
     }
 
-    private fun loadData() {
+    fun loadData() {
         val users = usersRepo.getUsers()
         usersListPresenter.users.addAll(users)
         viewState.updateList()

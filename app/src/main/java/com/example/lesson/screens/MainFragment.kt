@@ -8,6 +8,7 @@ import com.example.lesson.App
 import com.example.lesson.MainPresenter
 import com.example.lesson.databinding.LoginUserBinding
 import com.example.lesson.model.GithubUser
+import com.example.lesson.presentation.UserMainPresenter
 import com.example.lesson.view.BackButtonListener
 import com.example.lesson.view.ui.UsersView
 import moxy.MvpAppCompatFragment
@@ -18,9 +19,7 @@ class MainFragment : MvpAppCompatFragment(), UsersView, BackButtonListener {
     private var binding: LoginUserBinding? = null
 
     private val presenter by moxyPresenter {
-        MainPresenter(
-            App.instance.router
-        )
+        UserMainPresenter(App.instance.router)
     }
 
   //  private val adapter by lazy { UsersRVAdapter(presenter.usersListPresenter) }
@@ -47,7 +46,7 @@ class MainFragment : MvpAppCompatFragment(), UsersView, BackButtonListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val gitUser = arguments?.getParcelable<GithubUser>("USER_GIT")
-        binding?.loginUser?.text = gitUser?.login
+        binding?.loginUser?.text = gitUser?.login + " test userName"
     }
 
     override fun init() {
@@ -67,7 +66,8 @@ class MainFragment : MvpAppCompatFragment(), UsersView, BackButtonListener {
     }
 
     override fun backPressed():Boolean {
-        return presenter.backPressed()
+        presenter.backPressed()
+        return true
     }
 
 }
