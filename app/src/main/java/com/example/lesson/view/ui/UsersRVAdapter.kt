@@ -21,7 +21,8 @@ class UsersRVAdapter(private val presenter: IUserListPresenter) : RecyclerView.A
         presenter.bindView(holder.apply { pos = position })
     }
 
-    class ViewHolder(private val vb: ItemUserBinding) : RecyclerView.ViewHolder(vb.root), UserItemView {
+    class ViewHolder(private val vb: ItemUserBinding) : RecyclerView.ViewHolder(vb.root),
+        UserItemView {
 
         override var pos: Int = -1
 

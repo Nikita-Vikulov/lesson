@@ -23,7 +23,6 @@ class MainActivity : MvpAppCompatActivity(), MainView {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         _vb = ActivityMainBinding.inflate(layoutInflater)
         setContentView(vb.root)
     }
@@ -40,7 +39,7 @@ class MainActivity : MvpAppCompatActivity(), MainView {
 
     override fun onBackPressed() {
         supportFragmentManager.fragments.forEach {
-            if (it is BackButtonListener && !it.backPressed()) {
+            if (it is BackButtonListener && it.backPressed()) {
                 return
             }
         }
