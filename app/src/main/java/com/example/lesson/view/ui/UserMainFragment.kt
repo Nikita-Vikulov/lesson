@@ -1,38 +1,34 @@
-package com.example.lesson.screens
+package com.example.lesson.view.ui
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
 import com.example.lesson.App
-import com.example.lesson.MainPresenter
 import com.example.lesson.databinding.LoginUserBinding
 import com.example.lesson.model.GithubUser
+import com.example.lesson.presentation.UserMainPresenter
 import com.example.lesson.view.BackButtonListener
-import com.example.lesson.view.ui.UsersView
+import kotlinx.android.synthetic.main.login_user.*
 import moxy.MvpAppCompatFragment
 import moxy.ktx.moxyPresenter
 
-class MainFragment : MvpAppCompatFragment(), UsersView, BackButtonListener {
+class UserMainFragment : MvpAppCompatFragment(), UsersView, BackButtonListener {
 
     private var binding: LoginUserBinding? = null
 
     private val presenter by moxyPresenter {
-        MainPresenter(
-            App.instance.router
-        )
+        UserMainPresenter(App.instance.router)
     }
 
-  //  private val adapter by lazy { UsersRVAdapter(presenter.usersListPresenter) }
-
     companion object {
-        lateinit var arguments: Bundle
-
-        fun newInstance(bundle: Bundle): MainFragment {
-            val fragment = MainFragment
-            fragment.arguments = bundle
-            return MainFragment()
+        fun newInstance(fragment: String): UserMainFragment {
+            return UserMainFragment().apply {
+                arguments = bundleOf(KEY_ARG to fragment)
+            }
         }
+        const val KEY_ARG = "USER_GIT"
     }
 
     override fun onCreateView(
@@ -46,19 +42,15 @@ class MainFragment : MvpAppCompatFragment(), UsersView, BackButtonListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val gitUser = arguments?.getParcelable<GithubUser>("USER_GIT")
-        binding?.loginUser?.text = gitUser?.login
+        val gitUser = arguments?.getParcelable<GithubUser>(KEY_ARG)
+        binding?.loginUser?.text = gitUser?.login //+ " test userName"
     }
 
     override fun init() {
-//        vb?.rvUsers?.layoutManager = LinearLayoutManager(requireContext())
-//        vb?.rvUsers?.adapter = adapter
-
     }
 
 
     override fun updateList() {
-   //     adapter.notifyDataSetChanged()
     }
 
     override fun onDestroyView() {
@@ -66,9 +58,9 @@ class MainFragment : MvpAppCompatFragment(), UsersView, BackButtonListener {
         binding = null
     }
 
-    override fun backPressed():Boolean {
-        return presenter.backPressed()
+    override fun backPressed(): Boolean {
+        presenter.backPressed()
+        return true
     }
-
 }
 

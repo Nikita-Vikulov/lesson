@@ -6,6 +6,8 @@ import com.example.lesson.model.GithubUser
 import com.example.lesson.model.GithubUsersRepo
 import com.example.lesson.screens.AndroidScreens
 import com.example.lesson.view.UserItemView
+import com.example.lesson.view.ui.UserMainFragment.Companion.KEY_ARG
+import com.example.lesson.view.ui.UsersFragment
 import com.example.lesson.view.ui.UsersView
 import moxy.MvpPresenter
 import ru.terrakok.cicerone.Router
@@ -28,7 +30,6 @@ class UsersPresenter(private val usersRepo: GithubUsersRepo, private val router:
 
     val usersListPresenter = UsersListPresenter()
 
-
     override fun onFirstViewAttach() {
         super.onFirstViewAttach()
 
@@ -36,14 +37,14 @@ class UsersPresenter(private val usersRepo: GithubUsersRepo, private val router:
         loadData()
 
         usersListPresenter.itemClickListener = { itemView ->
-           val screen = AndroidScreens.UsersScreen(Bundle()).apply {
+            val screen = AndroidScreens.MainScreen(String()).apply {
                 fragment.arguments?.putParcelable("USER_GIT", usersListPresenter.users[itemView.pos])
             }
             router.navigateTo(screen)
         }
     }
 
-    private fun loadData() {
+    fun loadData() {
         val users = usersRepo.getUsers()
         usersListPresenter.users.addAll(users)
         viewState.updateList()

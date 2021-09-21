@@ -1,7 +1,8 @@
 package com.example.lesson.screens
 
-import android.os.Bundle
 import androidx.fragment.app.Fragment
+import com.example.lesson.presentation.UserMainPresenter
+import com.example.lesson.view.ui.UserMainFragment
 //import com.example.lesson.MainPresenter.Companion.newInstance
 //import com.example.lesson.view.ui.MainPresenter
 import com.example.lesson.view.ui.UsersFragment
@@ -10,13 +11,13 @@ import ru.terrakok.cicerone.android.support.SupportAppScreen
 
 object AndroidScreens {
 
-    class UsersScreen(private val fragment: Bundle) : SupportAppScreen() {
+    class UsersScreen : SupportAppScreen() {
 
-        override fun getFragment() : Fragment = UsersFragment.newInstance(fragment)
+        override fun getFragment() : Fragment = UsersFragment() //.newInstance(fragment)
     }
 
-    class MainScreen(private val fragment: Bundle) : SupportAppScreen() {
+    class MainScreen(private val fragment: String) : SupportAppScreen() {
 
-        override fun getFragment(): Fragment = MainFragment.newInstance(fragment)
+        override fun getFragment(): Fragment = UserMainFragment.newInstance(fragment)
     }
 }

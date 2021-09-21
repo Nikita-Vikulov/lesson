@@ -7,9 +7,10 @@ import moxy.MvpPresenter
 import ru.terrakok.cicerone.Router
 
 class MainPresenter(private val router: Router) : MvpPresenter<MainView>() {
+
     override fun onFirstViewAttach() {
         super.onFirstViewAttach()
-        router.replaceScreen(AndroidScreens.MainScreen(Bundle()))
+        router.replaceScreen(AndroidScreens.UsersScreen())
     }
 
     fun backPressed() {
