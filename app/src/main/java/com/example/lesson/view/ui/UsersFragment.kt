@@ -34,21 +34,15 @@ class UsersFragment : MvpAppCompatFragment(), UsersView, BackButtonListener {
         }
     }
 
-//    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-//        return FragmentUsersBinding.inflate(inflater, container, false).also {
-//            vb = it
-//        }.root
-//    }
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = ItemUserBinding.inflate(inflater, container, false)
+        //  binding = ItemUserBinding.inflate(inflater, container, false)
         vb = FragmentUsersBinding.inflate(inflater, container, false)
         return vb?.root
-        return binding?.root
+        //return binding?.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -76,19 +70,11 @@ class UsersFragment : MvpAppCompatFragment(), UsersView, BackButtonListener {
     override fun onDestroyView() {
         super.onDestroyView()
         vb = null
-        binding = null
+   //     binding = null
     }
 
     override fun backPressed(): Boolean {
         return presenter.backPressed()
     }
-
-//    companion object{
-//        fun newInstance(bundle: Bundle): UsersFragment {
-//            return UsersFragment().apply {
-//                arguments = bundleOf(USER_GIT to bundle) }
-//        }
-//        private const val USER_GIT = "USER_GIT"
-//    }
 
 }
