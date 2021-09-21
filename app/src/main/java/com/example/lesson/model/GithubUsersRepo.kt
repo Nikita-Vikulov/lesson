@@ -10,6 +10,11 @@ class GithubUsersRepo {
         GithubUser("user4"),
         GithubUser("user5")
     )
+ fun getUsers() = users
 
-    fun getUsers() = users
 }
+
+
+
+
+

@@ -1,7 +1,5 @@
 package com.example.lesson
 
-import android.os.Bundle
-import com.example.lesson.model.GithubUsersRepo
 import com.example.lesson.screens.AndroidScreens
 import moxy.MvpPresenter
 import ru.terrakok.cicerone.Router

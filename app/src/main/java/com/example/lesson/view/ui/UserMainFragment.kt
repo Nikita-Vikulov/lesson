@@ -10,7 +10,6 @@ import com.example.lesson.databinding.LoginUserBinding
 import com.example.lesson.model.GithubUser
 import com.example.lesson.presentation.UserMainPresenter
 import com.example.lesson.view.BackButtonListener
-import kotlinx.android.synthetic.main.login_user.*
 import moxy.MvpAppCompatFragment
 import moxy.ktx.moxyPresenter
 
@@ -23,12 +22,13 @@ class UserMainFragment : MvpAppCompatFragment(), UsersView, BackButtonListener {
     }
 
     companion object {
-        fun newInstance(fragment: String): UserMainFragment {
+        fun newInstance(fragment: GithubUser): UserMainFragment {
             return UserMainFragment().apply {
                 arguments = bundleOf(KEY_ARG to fragment)
             }
         }
-        const val KEY_ARG = "USER_GIT"
+
+        private const val KEY_ARG = "USER_GIT"
     }
 
     override fun onCreateView(
@@ -42,7 +42,7 @@ class UserMainFragment : MvpAppCompatFragment(), UsersView, BackButtonListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val gitUser = arguments?.getParcelable<GithubUser>(KEY_ARG)
+        val gitUser = arguments?.getParcelable<GithubUser>("USER_GIT")
         binding?.loginUser?.text = gitUser?.login //+ " test userName"
     }
 
@@ -59,8 +59,7 @@ class UserMainFragment : MvpAppCompatFragment(), UsersView, BackButtonListener {
     }
 
     override fun backPressed(): Boolean {
-        presenter.backPressed()
-        return true
+        return presenter.backPressed()
     }
 }
 

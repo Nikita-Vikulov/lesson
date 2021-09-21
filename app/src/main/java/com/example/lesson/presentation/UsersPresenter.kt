@@ -1,18 +1,16 @@
 package com.example.lesson.presentation
 
 
-import android.os.Bundle
 import com.example.lesson.model.GithubUser
 import com.example.lesson.model.GithubUsersRepo
 import com.example.lesson.screens.AndroidScreens
 import com.example.lesson.view.UserItemView
-import com.example.lesson.view.ui.UserMainFragment.Companion.KEY_ARG
-import com.example.lesson.view.ui.UsersFragment
 import com.example.lesson.view.ui.UsersView
 import moxy.MvpPresenter
 import ru.terrakok.cicerone.Router
 
-class UsersPresenter(private val usersRepo: GithubUsersRepo, private val router: Router) : MvpPresenter<UsersView>() {
+class UsersPresenter(private val usersRepo: GithubUsersRepo, private val router: Router) :
+    MvpPresenter<UsersView>() {
 
     class UsersListPresenter : IUserListPresenter {
 
@@ -37,14 +35,12 @@ class UsersPresenter(private val usersRepo: GithubUsersRepo, private val router:
         loadData()
 
         usersListPresenter.itemClickListener = { itemView ->
-            val screen = AndroidScreens.MainScreen(String()).apply {
-                fragment.arguments?.putParcelable("USER_GIT", usersListPresenter.users[itemView.pos])
-            }
+            val screen = AndroidScreens.MainScreen(usersListPresenter.users[itemView.pos])
             router.navigateTo(screen)
         }
     }
 
-    fun loadData() {
+    private fun loadData() {
         val users = usersRepo.getUsers()
         usersListPresenter.users.addAll(users)
         viewState.updateList()
@@ -55,3 +51,10 @@ class UsersPresenter(private val usersRepo: GithubUsersRepo, private val router:
         return true
     }
 }
+
+
+
+
+
+
+
