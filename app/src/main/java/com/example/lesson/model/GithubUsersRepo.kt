@@ -1,8 +1,9 @@
 package com.example.lesson.model
 
+import io.reactivex.rxjava3.kotlin.toObservable
+
 
 class GithubUsersRepo {
-
     private val users = listOf(
         GithubUser("user1"),
         GithubUser("user2"),
@@ -10,8 +11,8 @@ class GithubUsersRepo {
         GithubUser("user4"),
         GithubUser("user5")
     )
- fun getUsers() = users
 
+    fun getUsers() = users.toObservable()
 }
 
 

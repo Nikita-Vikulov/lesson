@@ -6,6 +6,8 @@ import com.example.lesson.model.GithubUsersRepo
 import com.example.lesson.screens.AndroidScreens
 import com.example.lesson.view.UserItemView
 import com.example.lesson.view.ui.UsersView
+import io.reactivex.rxjava3.core.Observer
+import io.reactivex.rxjava3.disposables.Disposable
 import moxy.MvpPresenter
 import ru.terrakok.cicerone.Router
 
@@ -40,10 +42,39 @@ class UsersPresenter(private val usersRepo: GithubUsersRepo, private val router:
         }
     }
 
+    val users: MutableList<GithubUser> = mutableListOf()
+
     private fun loadData() {
-        val users = usersRepo.getUsers()
+
+        val stringObserver = object : Observer<GithubUser> {
+            var disposable: Disposable? = null
+
+            override fun onComplete() {
+                 println("onComplete")
+            }
+
+            override fun onSubscribe(d: Disposable?) {
+                disposable = d
+                  println("onSubscribe")
+            }
+
+            override fun onNext(s: GithubUser?) {
+                println("onNext: $s")
+                if (s != null) {
+                    users.add(s)
+                }
+            }
+
+            override fun onError(e: Throwable?) {
+                println("onError: ${e?.message}")
+            }
+        }
+        usersRepo.getUsers()
+            .subscribe(stringObserver)
+
         usersListPresenter.users.addAll(users)
         viewState.updateList()
+
     }
 
     fun backPressed(): Boolean {
@@ -51,6 +82,8 @@ class UsersPresenter(private val usersRepo: GithubUsersRepo, private val router:
         return true
     }
 }
+
+
 
 
 
