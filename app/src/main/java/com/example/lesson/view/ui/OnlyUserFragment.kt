@@ -5,31 +5,36 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.lesson.App
 import com.example.lesson.databinding.LoginUserBinding
 import com.example.lesson.model.GithubUser
-import com.example.lesson.presentation.UserMainPresenter
-import com.example.lesson.view.BackButtonListener
+import com.example.lesson.presentation.OnlyUserPresenter
+import com.example.lesson.screens.BackButtonListener
 import moxy.MvpAppCompatFragment
 import moxy.ktx.moxyPresenter
 
-class UserMainFragment : MvpAppCompatFragment(), UsersView, BackButtonListener {
+class OnlyUserFragment : MvpAppCompatFragment(), UsersView, BackButtonListener {
 
     private var binding: LoginUserBinding? = null
 
     private val presenter by moxyPresenter {
-        UserMainPresenter(App.instance.router)
+        OnlyUserPresenter(
+            GithubUser(),
+            App.instance.router)
     }
 
     companion object {
-        fun newInstance(fragment: GithubUser): UserMainFragment {
-            return UserMainFragment().apply {
+        fun newInstance(fragment: GithubUser): OnlyUserFragment {
+            return OnlyUserFragment().apply {
                 arguments = bundleOf(KEY_ARG to fragment)
             }
         }
 
         private const val KEY_ARG = "USER_GIT"
     }
+
+    private val adapter by lazy { ReposRVAdapter(presenter.reposListPresenter) }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -47,10 +52,13 @@ class UserMainFragment : MvpAppCompatFragment(), UsersView, BackButtonListener {
     }
 
     override fun init() {
+        binding?.rvRepo?.layoutManager = LinearLayoutManager(requireContext())
+        binding?.rvRepo?.adapter = adapter
     }
 
 
     override fun updateList() {
+        adapter.notifyDataSetChanged()
     }
 
     override fun onDestroyView() {
