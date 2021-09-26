@@ -1,7 +1,7 @@
 package com.example.lesson.presentation
 
 import android.util.Log
-import com.example.lesson.model.GithubUser
+import com.example.lesson.model.GithubRepo
 import com.example.lesson.screens.AndroidScreens
 import com.example.lesson.view.RepoItemView
 import com.example.lesson.view.ui.ReposRVAdapter
@@ -14,13 +14,13 @@ import moxy.MvpPresenter
 import ru.terrakok.cicerone.Router
 
 class OnlyUserPresenter(
-    private val githubRepo: GithubUser,
+    private val githubRepo: GithubRepo,
     private val router: Router
 ) : MvpPresenter<UsersView>() {
 
     class RepoListPresenter : IRepoListPresenter {
 
-        val repos = mutableListOf<GithubUser>()
+        val repos = mutableListOf<GithubRepo>()
 
         override var itemClickListener: ((RepoItemView) -> Unit)? = null
 
@@ -28,8 +28,7 @@ class OnlyUserPresenter(
 
         override fun bindView(view: ReposRVAdapter.ViewHolder) {
             val repo = repos[view.pos]
-            view.showRepo(repo.reposUrl.orEmpty())
-            // view.loadAvatar(user.avatarUrl.orEmpty())
+            view.showRepo(repo.name.orEmpty())
         }
     }
 
@@ -47,11 +46,11 @@ class OnlyUserPresenter(
         }
     }
 
-    val repos: MutableList<GithubUser> = mutableListOf()
+    val repos: MutableList<GithubRepo> = mutableListOf()
 
     private fun loadData() {
 
-        val stringObserver = object : Observer<GithubUser> {
+        val stringObserver = object : Observer<GithubRepo> {
             var disposable: Disposable? = null
 
             override fun onComplete() {
@@ -63,7 +62,7 @@ class OnlyUserPresenter(
                 println("onSubscribe")
             }
 
-            override fun onNext(s: GithubUser?) {
+            override fun onNext(s: GithubRepo?) {
                 println("onNext: $s")
                 if (s != null) {
                     repos.add(s)

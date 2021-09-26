@@ -22,5 +22,5 @@ class GithubUser(
     @SerializedName("repos_url")
     val reposUrl: String? = null
 ) : Parcelable {
-    fun getRepo() = ApiHolder.apiService.getRepo("/users")//"/users/${login}/repos")
+
 }

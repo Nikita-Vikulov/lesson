@@ -44,7 +44,7 @@ class UsersPresenter(
         loadData()
 
         usersListPresenter.itemClickListener = { itemView ->
-            val screen = AndroidScreens.MainScreen(usersListPresenter.users[itemView.pos])
+            val screen = AndroidScreens.OnlyUserScreen(usersListPresenter.users[itemView.pos])
             router.navigateTo(screen)
         }
     }

@@ -5,63 +5,56 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.lesson.App
-import com.example.lesson.databinding.LoginUserBinding
+import com.example.lesson.databinding.GithubRepoBinding
 import com.example.lesson.model.GithubRepo
-import com.example.lesson.model.GithubUser
-import com.example.lesson.presentation.OnlyUserPresenter
+import com.example.lesson.presentation.ForksCountPresenter
 import com.example.lesson.screens.BackButtonListener
 import moxy.MvpAppCompatFragment
 import moxy.ktx.moxyPresenter
 
-class OnlyUserFragment : MvpAppCompatFragment(), UsersView, BackButtonListener {
+class ForksCountFragment : MvpAppCompatFragment(), UsersView, BackButtonListener {
 
-    private var binding: LoginUserBinding? = null
+    private var binding: GithubRepoBinding? = null
 
     private val presenter by moxyPresenter {
-        OnlyUserPresenter(
-            GithubRepo(),
-            App.instance.router
-        )
+        ForksCountPresenter(App.instance.router)
+
     }
 
     companion object {
-        fun newInstance(fragment: GithubUser): OnlyUserFragment {
-            return OnlyUserFragment().apply {
+        fun newInstance(fragment: GithubRepo): ForksCountFragment {
+            return ForksCountFragment().apply {
                 arguments = bundleOf(KEY_ARG to fragment)
             }
         }
 
-        private const val KEY_ARG = "USER_GIT"
+        private const val KEY_ARG = "FORKS_COUNT"
     }
 
-    private val adapter by lazy { ReposRVAdapter(presenter.reposListPresenter) }
+   // private val adapter by lazy { ReposRVAdapter(presenter.reposListPresenter) }
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = LoginUserBinding.inflate(inflater, container, false)
+        binding = GithubRepoBinding.inflate(inflater, container, false)
         return binding?.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val gitUser = arguments?.getParcelable<GithubUser>("USER_GIT")
-        binding?.loginUser?.text = gitUser?.login //+ " test userName"
+        val gitForks = arguments?.getParcelable<GithubRepo>("FORKS_COUNT")
+        binding?.forksCount?.text = "forks count :" + gitForks?.forksCount //+ " test userName"
     }
 
 
     override fun init() {
-        binding?.rvRepo?.layoutManager = LinearLayoutManager(requireContext())
-        binding?.rvRepo?.adapter = adapter
     }
 
 
     override fun updateList() {
-        adapter.notifyDataSetChanged()
     }
 
     override fun onDestroyView() {
@@ -73,4 +66,3 @@ class OnlyUserFragment : MvpAppCompatFragment(), UsersView, BackButtonListener {
         return presenter.backPressed()
     }
 }
-
