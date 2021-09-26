@@ -1,4 +1,4 @@
-package com.example.lesson.view
+package com.example.lesson.screens
 
 interface BackButtonListener {
 

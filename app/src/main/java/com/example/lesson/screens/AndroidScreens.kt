@@ -2,7 +2,7 @@ package com.example.lesson.screens
 
 import androidx.fragment.app.Fragment
 import com.example.lesson.model.GithubUser
-import com.example.lesson.view.ui.UserMainFragment
+import com.example.lesson.view.ui.OnlyUserFragment
 import com.example.lesson.view.ui.UsersFragment
 import ru.terrakok.cicerone.android.support.SupportAppScreen
 
@@ -16,6 +16,11 @@ object AndroidScreens {
 
     class MainScreen(private val fragment: GithubUser) : SupportAppScreen() {
 
-        override fun getFragment() = UserMainFragment.newInstance(fragment)
+        override fun getFragment() = OnlyUserFragment.newInstance(fragment)
+    }
+
+    class ReposScreen(private val fragment: GithubUser) : SupportAppScreen() {
+
+     //   override fun getFragment() = OnlyUserFragment.newInstance()
     }
 }

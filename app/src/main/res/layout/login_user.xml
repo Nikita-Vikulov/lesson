@@ -10,8 +10,14 @@
     <TextView
         android:id="@+id/loginUser"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginStart="16dp"
+        android:layout_height="30dp"
+        android:layout_marginStart="5dp"
         tools:text="user name" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvRepo"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginStart="15dp"/>
 
 </androidx.appcompat.widget.LinearLayoutCompat>

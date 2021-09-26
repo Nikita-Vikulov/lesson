@@ -9,7 +9,7 @@ import com.example.lesson.App
 import com.example.lesson.databinding.FragmentUsersBinding
 import com.example.lesson.model.GithubUsersRepo
 import com.example.lesson.presentation.UsersPresenter
-import com.example.lesson.view.BackButtonListener
+import com.example.lesson.screens.BackButtonListener
 import moxy.MvpAppCompatFragment
 import moxy.ktx.moxyPresenter
 
@@ -24,7 +24,7 @@ class UsersFragment : MvpAppCompatFragment(), UsersView, BackButtonListener {
         )
     }
 
-    private val adapter by lazy { UsersRVAdapter(presenter.usersListPresenter) }
+    private val adapter by lazy { UsersRVAdapter(presenter.usersListPresenter, GlideImageLoader()) }
 
     override fun onCreateView(
         inflater: LayoutInflater,
