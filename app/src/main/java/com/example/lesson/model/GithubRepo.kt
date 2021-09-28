@@ -6,7 +6,8 @@ import com.google.gson.annotations.SerializedName
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize
-class GithubUser(
+class GithubRepo(
+
     @Expose
     @SerializedName("login")
     val login: String? = null,
@@ -15,12 +16,13 @@ class GithubUser(
     val id: Long? = null,
 
     @Expose
-    @SerializedName("avatar_url")
-    val avatarUrl: String? = null,
+    @SerializedName("name")
+    val name: String? = null,
 
     @Expose
-    @SerializedName("repos_url")
-    val reposUrl: String? = null
-) : Parcelable {
+    @SerializedName("forks")
+    val forksCount: String? = null,
 
+) : Parcelable {
+    fun getRepo() = ApiHolder.apiService.getRepo("/users/${login}/repos")
 }

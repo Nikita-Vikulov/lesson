@@ -1,39 +1,42 @@
-package com.example.lesson.screens
+package com.example.lesson.view.ui
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.lesson.App
-import com.example.lesson.MainPresenter
 import com.example.lesson.databinding.LoginUserBinding
+import com.example.lesson.model.GithubRepo
 import com.example.lesson.model.GithubUser
-import com.example.lesson.view.BackButtonListener
-import com.example.lesson.view.ui.UsersView
+import com.example.lesson.presentation.OnlyUserPresenter
+import com.example.lesson.screens.BackButtonListener
 import moxy.MvpAppCompatFragment
 import moxy.ktx.moxyPresenter
 
-class MainFragment : MvpAppCompatFragment(), UsersView, BackButtonListener {
+class OnlyUserFragment : MvpAppCompatFragment(), UsersView, BackButtonListener {
 
     private var binding: LoginUserBinding? = null
 
     private val presenter by moxyPresenter {
-        MainPresenter(
+        OnlyUserPresenter(
+            GithubRepo(),
             App.instance.router
         )
     }
 
-  //  private val adapter by lazy { UsersRVAdapter(presenter.usersListPresenter) }
-
     companion object {
-        lateinit var arguments: Bundle
-
-        fun newInstance(bundle: Bundle): MainFragment {
-            val fragment = MainFragment
-            fragment.arguments = bundle
-            return MainFragment()
+        fun newInstance(fragment: GithubUser): OnlyUserFragment {
+            return OnlyUserFragment().apply {
+                arguments = bundleOf(KEY_ARG to fragment)
+            }
         }
+
+        private const val KEY_ARG = "USER_GIT"
     }
+
+    private val adapter by lazy { ReposRVAdapter(presenter.reposListPresenter) }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -47,18 +50,18 @@ class MainFragment : MvpAppCompatFragment(), UsersView, BackButtonListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val gitUser = arguments?.getParcelable<GithubUser>("USER_GIT")
-        binding?.loginUser?.text = gitUser?.login
+        binding?.loginUser?.text = gitUser?.login //+ " test userName"
     }
 
-    override fun init() {
-//        vb?.rvUsers?.layoutManager = LinearLayoutManager(requireContext())
-//        vb?.rvUsers?.adapter = adapter
 
+    override fun init() {
+        binding?.rvRepo?.layoutManager = LinearLayoutManager(requireContext())
+        binding?.rvRepo?.adapter = adapter
     }
 
 
     override fun updateList() {
-   //     adapter.notifyDataSetChanged()
+        adapter.notifyDataSetChanged()
     }
 
     override fun onDestroyView() {
@@ -66,9 +69,8 @@ class MainFragment : MvpAppCompatFragment(), UsersView, BackButtonListener {
         binding = null
     }
 
-    override fun backPressed():Boolean {
+    override fun backPressed(): Boolean {
         return presenter.backPressed()
     }
-
 }
 

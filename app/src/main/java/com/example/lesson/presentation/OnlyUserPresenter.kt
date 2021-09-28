@@ -1,12 +1,10 @@
 package com.example.lesson.presentation
 
-
 import android.util.Log
-import com.example.lesson.model.GithubUser
-import com.example.lesson.model.GithubUsersRepo
+import com.example.lesson.model.GithubRepo
 import com.example.lesson.screens.AndroidScreens
-import com.example.lesson.view.UserItemView
-import com.example.lesson.view.ui.UsersRVAdapter
+import com.example.lesson.view.RepoItemView
+import com.example.lesson.view.ui.ReposRVAdapter
 import com.example.lesson.view.ui.UsersView
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Observer
@@ -15,27 +13,26 @@ import io.reactivex.rxjava3.schedulers.Schedulers
 import moxy.MvpPresenter
 import ru.terrakok.cicerone.Router
 
-class UsersPresenter(
-    private val usersRepo: GithubUsersRepo,
+class OnlyUserPresenter(
+    private val githubRepo: GithubRepo,
     private val router: Router
 ) : MvpPresenter<UsersView>() {
 
-    class UsersListPresenter : IUserListPresenter {
+    class RepoListPresenter : IRepoListPresenter {
 
-        val users = mutableListOf<GithubUser>()
+        val repos = mutableListOf<GithubRepo>()
 
-        override var itemClickListener: ((UserItemView) -> Unit)? = null
+        override var itemClickListener: ((RepoItemView) -> Unit)? = null
 
-        override fun getCount(): Int = users.size
+        override fun getCount(): Int = repos.size
 
-        override fun bindView(view: UsersRVAdapter.ViewHolder) {
-            val user = users[view.pos]
-            view.showLogin(user.login.orEmpty())
-            view.loadAvatar(user.avatarUrl.orEmpty())
+        override fun bindView(view: ReposRVAdapter.ViewHolder) {
+            val repo = repos[view.pos]
+            view.showRepo(repo.name.orEmpty())
         }
     }
 
-    val usersListPresenter = UsersListPresenter()
+    val reposListPresenter = RepoListPresenter()
 
     override fun onFirstViewAttach() {
         super.onFirstViewAttach()
@@ -43,17 +40,17 @@ class UsersPresenter(
         viewState.init()
         loadData()
 
-        usersListPresenter.itemClickListener = { itemView ->
-            val screen = AndroidScreens.OnlyUserScreen(usersListPresenter.users[itemView.pos])
+        reposListPresenter.itemClickListener = { itemView ->
+            val screen = AndroidScreens.ReposScreen(reposListPresenter.repos[itemView.pos])
             router.navigateTo(screen)
         }
     }
 
-    val users: MutableList<GithubUser> = mutableListOf()
+    val repos: MutableList<GithubRepo> = mutableListOf()
 
     private fun loadData() {
 
-        val stringObserver = object : Observer<GithubUser> {
+        val stringObserver = object : Observer<GithubRepo> {
             var disposable: Disposable? = null
 
             override fun onComplete() {
@@ -65,10 +62,10 @@ class UsersPresenter(
                 println("onSubscribe")
             }
 
-            override fun onNext(s: GithubUser?) {
-                // println("onNext: $s")
+            override fun onNext(s: GithubRepo?) {
+                println("onNext: $s")
                 if (s != null) {
-                    users.add(s)
+                    repos.add(s)
                 }
             }
 
@@ -77,30 +74,22 @@ class UsersPresenter(
             }
         }
 
-        usersRepo.getUsers()
+        githubRepo.getRepo()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe({ users ->
-                usersListPresenter.users.addAll(users)
+            .subscribe({ repos ->
+                reposListPresenter.repos.addAll(repos)
                 viewState.updateList()
             }, {
-                Log.e("UsersPresenter", "Ошибка получения пользователей", it)
+                Log.e("OnlyUserPresenter", "Ошибка получения репозитория", it)
             })
 
 
     }
 
     fun backPressed(): Boolean {
-        router.exit()
+        router.backTo(AndroidScreens.UsersScreen())
         return true
     }
+
 }
-
-
-
-
-
-
-
-
-

@@ -8,16 +8,10 @@
     tools:context=".MainActivity">
 
     <TextView
-        android:id="@+id/loginUser"
-        android:layout_width="match_parent"
-        android:layout_height="30dp"
-        android:layout_marginStart="5dp"
-        tools:text="user name" />
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvRepo"
+        android:id="@+id/forksCount"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginStart="15dp"/>
+        android:layout_marginStart="5dp"
+        tools:text="forks count" />
 
 </androidx.appcompat.widget.LinearLayoutCompat>
