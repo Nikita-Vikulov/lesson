@@ -1,6 +1,7 @@
 package com.example.lesson
 
 import android.app.Application
+import com.example.lesson.data.db.GithubDatabase
 import ru.terrakok.cicerone.Cicerone
 import ru.terrakok.cicerone.Router
 
@@ -15,6 +16,7 @@ class App : Application() {
     override fun onCreate() {
         super.onCreate()
         instance = this
+        GithubDatabase.create(this)
     }
 
     companion object {
