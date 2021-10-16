@@ -7,13 +7,9 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.lesson.App
 import com.example.lesson.adapter.adapter.UsersRVAdapter
-import com.example.lesson.data.GithubRepositoriesRepo
-import com.example.lesson.data.GithubUsersRepo
-import com.example.lesson.data.db.GithubDatabase
 import com.example.lesson.databinding.FragmentUsersBinding
 import com.example.lesson.images.GlideImageLoader
 import com.example.lesson.navigation.BackButtonListener
-import com.example.lesson.utils.AndroidNetworkStatus
 import moxy.MvpAppCompatFragment
 import moxy.ktx.moxyPresenter
 
@@ -22,19 +18,9 @@ class UsersFragment : MvpAppCompatFragment(), UsersView, BackButtonListener {
     private var vb: FragmentUsersBinding? = null
 
     private val presenter by moxyPresenter {
-        UsersPresenter(
-            GithubUsersRepo(
-                AndroidNetworkStatus(requireContext()),
-                GithubDatabase.getInstance()
-            ),
-
-            GithubRepositoriesRepo(
-                AndroidNetworkStatus(requireContext()),
-                GithubDatabase.getInstance()
-            ),
-            App.instance.router
-        )
-
+        UsersPresenter().apply {
+            App.instance.appComponent.inject(this)
+        }
     }
 
     private val adapter by lazy { UsersRVAdapter(presenter.usersListPresenter, GlideImageLoader()) }

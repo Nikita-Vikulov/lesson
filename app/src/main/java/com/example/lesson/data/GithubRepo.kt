@@ -1,14 +1,13 @@
 package com.example.lesson.data
 
 import android.os.Parcelable
-import com.example.lesson.remote.ApiHolder
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 import kotlinx.android.parcel.Parcelize
 
-@Parcelize
-class GithubRepo(
 
+@Parcelize
+    data class GithubRepo(
     @Expose
     @SerializedName("login")
     val login: String? = null,
@@ -22,8 +21,9 @@ class GithubRepo(
 
     @Expose
     @SerializedName("forks")
-    val forksCount: Int? = null,
+    val forksCount: Int? = null
 
 ) : Parcelable {
-    fun getRepo() = ApiHolder.apiService.getRepo("/users/${login}/repos")
+   // fun getRepo() = Holder.apiService.getRepo("/users/${login}/repos")
+
 }

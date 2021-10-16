@@ -5,14 +5,15 @@ import com.example.lesson.data.db.GithubDatabase
 import com.example.lesson.remote.ApiHolder
 import com.example.lesson.utils.INetworkStatus
 
-class GithubUsersRepo(
+class GithubUsersRepo (
     private val networkStatus: INetworkStatus,
-    private val db: GithubDatabase
+    private val db: GithubDatabase,
+    private val apiHolder: ApiHolder
 ) {
     fun getUsers() = networkStatus.isOnlineSingle().flatMap { isOnline ->
          val cacheUsers = RoomGithubUsersCache(db)
         if (isOnline) {
-            ApiHolder.apiService.getUsers("/users")
+            apiHolder.apiService.getUsers("/users")
                 .flatMap { users -> cacheUsers.sethUsersInDB(users)
 
                 }

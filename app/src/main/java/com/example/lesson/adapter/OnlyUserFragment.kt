@@ -8,7 +8,6 @@ import androidx.core.os.bundleOf
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.lesson.App
 import com.example.lesson.adapter.adapter.ReposRVAdapter
-import com.example.lesson.data.GithubRepo
 import com.example.lesson.data.GithubUser
 import com.example.lesson.databinding.LoginUserBinding
 import com.example.lesson.navigation.BackButtonListener
@@ -17,16 +16,30 @@ import moxy.ktx.moxyPresenter
 
 class OnlyUserFragment : MvpAppCompatFragment(), UsersView, BackButtonListener {
 
+
     private var binding: LoginUserBinding? = null
 
     private val presenter by moxyPresenter {
-        OnlyUserPresenter(
-            GithubRepo(),
-            App.instance.router
-        )
+        OnlyUserPresenter().apply {
+            //GithubRepo(),
+            App.instance.appComponent.inject(this)
+        }
     }
-
     companion object {
+        private const val KEY_ARG = "USER_GIT"
+        var urlRepos: String? = null
+        lateinit var user: GithubUser
+
+        fun newInstance(user: GithubUser): OnlyUserFragment {
+            return OnlyUserFragment().apply {
+                urlRepos = user.reposUrl
+                this@Companion.user = user
+                arguments = bundleOf(Pair(KEY_ARG, user))
+            }
+        }
+
+    }
+/*    companion object {
         fun newInstance(fragment: GithubUser): OnlyUserFragment {
             return OnlyUserFragment().apply {
                 arguments = bundleOf(KEY_ARG to fragment)
@@ -34,7 +47,7 @@ class OnlyUserFragment : MvpAppCompatFragment(), UsersView, BackButtonListener {
         }
 
         private const val KEY_ARG = "USER_GIT"
-    }
+    }*/
 
     private val adapter by lazy { ReposRVAdapter(presenter.reposListPresenter) }
 
@@ -72,5 +85,6 @@ class OnlyUserFragment : MvpAppCompatFragment(), UsersView, BackButtonListener {
     override fun backPressed(): Boolean {
         return presenter.backPressed()
     }
+
 }
 

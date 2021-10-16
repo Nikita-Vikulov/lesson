@@ -15,12 +15,18 @@ import io.reactivex.rxjava3.disposables.Disposable
 import io.reactivex.rxjava3.schedulers.Schedulers
 import moxy.MvpPresenter
 import ru.terrakok.cicerone.Router
+import javax.inject.Inject
 
-class UsersPresenter(
-    private val usersRepo: GithubUsersRepo,
-    private val repositoriesRepo: GithubRepositoriesRepo,
-    private val router: Router
-) : MvpPresenter<UsersView>() {
+class UsersPresenter : MvpPresenter<UsersView>() {
+
+    @Inject
+    lateinit var usersRepo: GithubUsersRepo
+
+    @Inject
+    lateinit var repositoriesRepo: GithubRepositoriesRepo
+
+    @Inject
+    lateinit var router: Router
 
     class UsersListPresenter : IUserListPresenter {
 
