@@ -1,20 +1,21 @@
 package com.example.lesson
 
 import android.app.Application
-import ru.terrakok.cicerone.Cicerone
-import ru.terrakok.cicerone.Router
+import com.example.lesson.data.di.modules.AppComponent
+import com.example.lesson.data.di.modules.AppModule
+import com.example.lesson.data.di.modules.DaggerAppComponent
 
 class App : Application() {
 
-    private val cicerone: Cicerone<Router> by lazy {
-        Cicerone.create()
-    }
-    val navigationHolder get() = cicerone.navigatorHolder
-    val router get() = cicerone.router
+    lateinit var appComponent: AppComponent
 
     override fun onCreate() {
         super.onCreate()
         instance = this
+
+            appComponent = DaggerAppComponent.builder()
+                .appModule(AppModule(this))
+                .build()
     }
 
     companion object {
