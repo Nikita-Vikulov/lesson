@@ -1,16 +1,19 @@
-package com.example.lesson
+package com.example.lesson.data.cache
 
 import com.example.lesson.data.GithubRepo
 import com.example.lesson.data.GithubUser
 import com.example.lesson.data.db.GithubDatabase
 import com.example.lesson.data.db.RoomGithubRepository
+import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Single
 
-class RoomGithubRepositoriesCache(val db: GithubDatabase, val user: GithubUser) :
+class RoomGithubRepositoriesCache(val db: GithubDatabase) :
     IRepositoriesCache {
 
-    override fun setReposInDB(repos: List<GithubRepo>): Single<List<GithubRepo>> =
-        Single.fromCallable {
+    override fun setReposInDB(
+        user: GithubUser,
+        repos: List<GithubRepo>
+    ): Completable = Completable.fromAction {
             val roomUser = db.userDao.getByLogin(user.login.orEmpty())
                 ?: error("Такого пользователя нет")
             val roomRepos = repos.map {
@@ -25,7 +28,7 @@ class RoomGithubRepositoriesCache(val db: GithubDatabase, val user: GithubUser) 
             repos
         }
 
-    override fun getReposOutDB(): Single<List<GithubRepo>> =
+    override fun getReposOutDB(user: GithubUser): Single<List<GithubRepo>> =
         Single.fromCallable {
             val roomUser = db.userDao.getByLogin(user.login.orEmpty())
                 ?: error("Такого пользователя нет в БД")

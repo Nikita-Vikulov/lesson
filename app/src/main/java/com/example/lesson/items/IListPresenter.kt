@@ -1,7 +1,7 @@
 package com.example.lesson.items
 
-import com.example.lesson.adapter.adapter.UserItemView
-import com.example.lesson.adapter.adapter.UsersRVAdapter
+import com.example.lesson.screens.adapter.UserItemView
+import com.example.lesson.screens.adapter.UsersRVAdapter
 
 interface IListPresenter<V : IItemView> {
 

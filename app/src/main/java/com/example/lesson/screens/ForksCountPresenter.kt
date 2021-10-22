@@ -1,4 +1,4 @@
-package com.example.lesson.adapter
+package com.example.lesson.screens
 
 import com.example.lesson.activity.MainView
 import com.example.lesson.navigation.AndroidScreens

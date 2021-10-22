@@ -1,6 +1,6 @@
 package com.example.lesson.items
 
-import com.example.lesson.adapter.adapter.ReposRVAdapter
+import com.example.lesson.screens.adapter.ReposRVAdapter
 
 interface IRListPresenter<V : IItemView> {
 

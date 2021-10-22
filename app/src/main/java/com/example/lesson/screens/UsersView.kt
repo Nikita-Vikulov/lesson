@@ -1,10 +1,10 @@
-package com.example.lesson.adapter.adapter
+package com.example.lesson.screens
 
 import moxy.MvpView
 import moxy.viewstate.strategy.alias.AddToEndSingle
 
 @AddToEndSingle
-interface ReposView: MvpView {
+interface UsersView: MvpView {
     fun init()
     fun updateList()
 }

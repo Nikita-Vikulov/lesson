@@ -1,17 +1,15 @@
-package com.example.lesson.adapter
+package com.example.lesson.screens
 
 
 import android.util.Log
-import com.example.lesson.adapter.adapter.UserItemView
-import com.example.lesson.adapter.adapter.UsersRVAdapter
-import com.example.lesson.data.GithubRepositoriesRepo
+import com.example.lesson.App
 import com.example.lesson.data.GithubUser
 import com.example.lesson.data.GithubUsersRepo
 import com.example.lesson.items.IUserListPresenter
 import com.example.lesson.navigation.AndroidScreens
+import com.example.lesson.screens.adapter.UserItemView
+import com.example.lesson.screens.adapter.UsersRVAdapter
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
-import io.reactivex.rxjava3.core.Observer
-import io.reactivex.rxjava3.disposables.Disposable
 import io.reactivex.rxjava3.schedulers.Schedulers
 import moxy.MvpPresenter
 import ru.terrakok.cicerone.Router
@@ -21,9 +19,6 @@ class UsersPresenter : MvpPresenter<UsersView>() {
 
     @Inject
     lateinit var usersRepo: GithubUsersRepo
-
-    @Inject
-    lateinit var repositoriesRepo: GithubRepositoriesRepo
 
     @Inject
     lateinit var router: Router
@@ -61,37 +56,9 @@ class UsersPresenter : MvpPresenter<UsersView>() {
 
     private fun loadData() {
 
-        val stringObserver = object : Observer<GithubUser> {
-            var disposable: Disposable? = null
-
-            override fun onComplete() {
-                println("onComplete")
-            }
-
-            override fun onSubscribe(d: Disposable?) {
-                disposable = d
-                println("onSubscribe")
-            }
-
-            override fun onNext(s: GithubUser?) {
-                // println("onNext: $s")
-                if (s != null) {
-                    users.add(s)
-                }
-            }
-
-            override fun onError(e: Throwable?) {
-                println("onError: ${e?.message}")
-            }
-        }
-
         usersRepo.getUsers()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .map {
-                loadRepos(it.first())
-                it
-            }
             .subscribe({ users ->
                 usersListPresenter.users.addAll(users)
                 viewState.updateList()
@@ -100,20 +67,14 @@ class UsersPresenter : MvpPresenter<UsersView>() {
             })
     }
 
-    private fun loadRepos(user: GithubUser) {
-        repositoriesRepo.getRepositories(user)
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe({ repos ->
-                Log.d("UsersPresenter", "${repos.first()}")
-            }, {
-                Log.e("UsersPresenter", "Ошибка получения пользователей", it)
-            })
-    }
 
     fun backPressed(): Boolean {
         router.exit()
         return true
+    }
+    override fun onDestroy() {
+        super.onDestroy()
+        App.instance.releaseUserScope()
     }
 }
 

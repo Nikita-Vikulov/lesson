@@ -1,6 +1,6 @@
 package com.example.lesson.data
 
-import com.example.lesson.RoomGithubUsersCache
+import com.example.lesson.data.cache.RoomGithubUsersCache
 import com.example.lesson.data.db.GithubDatabase
 import com.example.lesson.remote.ApiHolder
 import com.example.lesson.utils.INetworkStatus

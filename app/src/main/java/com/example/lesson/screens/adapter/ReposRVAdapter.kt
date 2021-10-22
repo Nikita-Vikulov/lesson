@@ -1,4 +1,4 @@
-package com.example.lesson.adapter.adapter
+package com.example.lesson.screens.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup

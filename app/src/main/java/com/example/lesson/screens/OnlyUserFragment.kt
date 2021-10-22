@@ -1,4 +1,4 @@
-package com.example.lesson.adapter
+package com.example.lesson.screens
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -7,10 +7,10 @@ import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.lesson.App
-import com.example.lesson.adapter.adapter.ReposRVAdapter
 import com.example.lesson.data.GithubUser
 import com.example.lesson.databinding.LoginUserBinding
 import com.example.lesson.navigation.BackButtonListener
+import com.example.lesson.screens.adapter.ReposRVAdapter
 import moxy.MvpAppCompatFragment
 import moxy.ktx.moxyPresenter
 
@@ -20,9 +20,9 @@ class OnlyUserFragment : MvpAppCompatFragment(), UsersView, BackButtonListener {
     private var binding: LoginUserBinding? = null
 
     private val presenter by moxyPresenter {
-        OnlyUserPresenter().apply {
-            //GithubRepo(),
-            App.instance.appComponent.inject(this)
+        App.instance.initRepositorySubcomponent()
+        OnlyUserPresenter(user).apply {
+            App.instance.repositorySubcomponent?.inject(this)
         }
     }
     companion object {
@@ -37,17 +37,7 @@ class OnlyUserFragment : MvpAppCompatFragment(), UsersView, BackButtonListener {
                 arguments = bundleOf(Pair(KEY_ARG, user))
             }
         }
-
     }
-/*    companion object {
-        fun newInstance(fragment: GithubUser): OnlyUserFragment {
-            return OnlyUserFragment().apply {
-                arguments = bundleOf(KEY_ARG to fragment)
-            }
-        }
-
-        private const val KEY_ARG = "USER_GIT"
-    }*/
 
     private val adapter by lazy { ReposRVAdapter(presenter.reposListPresenter) }
 

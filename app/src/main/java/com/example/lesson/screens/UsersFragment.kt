@@ -1,4 +1,4 @@
-package com.example.lesson.adapter
+package com.example.lesson.screens
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -6,10 +6,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.lesson.App
-import com.example.lesson.adapter.adapter.UsersRVAdapter
 import com.example.lesson.databinding.FragmentUsersBinding
 import com.example.lesson.images.GlideImageLoader
 import com.example.lesson.navigation.BackButtonListener
+import com.example.lesson.screens.adapter.UsersRVAdapter
 import moxy.MvpAppCompatFragment
 import moxy.ktx.moxyPresenter
 
@@ -18,8 +18,9 @@ class UsersFragment : MvpAppCompatFragment(), UsersView, BackButtonListener {
     private var vb: FragmentUsersBinding? = null
 
     private val presenter by moxyPresenter {
+        App.instance.initUserSubcomponent()
         UsersPresenter().apply {
-            App.instance.appComponent.inject(this)
+            App.instance.usersSubcomponent?.inject(this)
         }
     }
 

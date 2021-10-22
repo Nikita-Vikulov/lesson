@@ -24,6 +24,5 @@ import kotlinx.android.parcel.Parcelize
     val forksCount: Int? = null
 
 ) : Parcelable {
-   // fun getRepo() = Holder.apiService.getRepo("/users/${login}/repos")
 
 }

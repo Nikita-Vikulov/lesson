@@ -1,4 +1,4 @@
-package com.example.lesson
+package com.example.lesson.data.cache
 
 import com.example.lesson.data.GithubUser
 import com.example.lesson.data.db.GithubDatabase

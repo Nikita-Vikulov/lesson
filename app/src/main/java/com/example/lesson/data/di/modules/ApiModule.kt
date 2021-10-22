@@ -18,10 +18,6 @@ import javax.inject.Singleton
 
 @Module
 class ApiModule {
-//
-//    @Binds
-//    fun abc(impl: ApiHolder): IApiHolder
-//
 
     @Provides
     @Singleton

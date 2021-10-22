@@ -14,6 +14,4 @@ interface GithubUsersService {
     @GET
     fun getUsers(@Url url:String): Single<List<GithubUser>>
 
-    @GET
-    fun getRepositories(@Url reposUrl: String): Single<List<GithubRepo>>
 }

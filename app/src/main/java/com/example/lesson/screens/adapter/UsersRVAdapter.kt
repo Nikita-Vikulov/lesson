@@ -1,11 +1,11 @@
-package com.example.lesson.adapter.adapter
+package com.example.lesson.screens.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.lesson.databinding.ImageUserBinding
-import com.example.lesson.items.IUserListPresenter
 import com.example.lesson.images.GlideImageLoader
+import com.example.lesson.items.IUserListPresenter
 
 class UsersRVAdapter(
     private val presenterUser: IUserListPresenter,

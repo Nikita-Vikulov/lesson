@@ -1,4 +1,4 @@
-package com.example.lesson.adapter
+package com.example.lesson.screens
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -31,8 +31,6 @@ class ForksCountFragment : MvpAppCompatFragment(), UsersView, BackButtonListener
 
         private const val KEY_ARG = "FORKS_COUNT"
     }
-
-  //  private val adapter by lazy { ReposRVAdapter(presenter.reposListPresenter) }
 
     override fun onCreateView(
         inflater: LayoutInflater,

@@ -1,12 +1,14 @@
-package com.example.lesson.adapter
+package com.example.lesson.screens
 
-import com.example.lesson.adapter.adapter.ReposRVAdapter
+import android.util.Log
+import com.example.lesson.App
 import com.example.lesson.data.GithubRepo
 import com.example.lesson.data.GithubRepoRepo
 import com.example.lesson.data.GithubUser
 import com.example.lesson.items.IRepoListPresenter
 import com.example.lesson.items.RepoItemView
 import com.example.lesson.navigation.AndroidScreens
+import com.example.lesson.screens.adapter.ReposRVAdapter
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Observer
 import io.reactivex.rxjava3.disposables.Disposable
@@ -15,7 +17,7 @@ import moxy.MvpPresenter
 import ru.terrakok.cicerone.Router
 import javax.inject.Inject
 
-class OnlyUserPresenter: MvpPresenter<UsersView>() {
+class OnlyUserPresenter(private val user: GithubUser): MvpPresenter<UsersView>() {
 
     @Inject
     lateinit var githubRepo: GithubRepoRepo
@@ -44,7 +46,7 @@ class OnlyUserPresenter: MvpPresenter<UsersView>() {
         super.onFirstViewAttach()
 
         viewState.init()
-        loadData(OnlyUserFragment.user)
+        loadData()
 
         reposListPresenter.itemClickListener = { itemView ->
             val screen = AndroidScreens.ReposScreen(reposListPresenter.repos[itemView.pos])
@@ -54,7 +56,7 @@ class OnlyUserPresenter: MvpPresenter<UsersView>() {
 
     val repos: MutableList<GithubRepo> = mutableListOf()
 
-    private fun loadData(user:GithubUser) {
+    private fun loadData() {
 
         val stringObserver = object : Observer<GithubRepo> {
             var disposable: Disposable? = null
@@ -84,10 +86,11 @@ class OnlyUserPresenter: MvpPresenter<UsersView>() {
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({ repos ->
+                reposListPresenter.repos.clear()
                 reposListPresenter.repos.addAll(repos)
                 viewState.updateList()
             }, {
-               // Log.e("OnlyUserPresenter", "Ошибка получения репозитория", it)
+               Log.e("OnlyUserPresenter", "Ошибка получения репозитория", it)
             })
 
 
@@ -98,4 +101,8 @@ class OnlyUserPresenter: MvpPresenter<UsersView>() {
         return true
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        App.instance.releaseRepoScope()
+    }
 }
