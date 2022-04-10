@@ -50,7 +50,7 @@ class OnlyUserFragment : MvpAppCompatFragment(), UsersView, BackButtonListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val gitUser = arguments?.getParcelable<GithubUser>("USER_GIT")
-        binding?.loginUser?.text = gitUser?.login //+ " test userName"
+        binding?.loginUser?.text = gitUser?.kind //+ " test userName"
     }
 
 

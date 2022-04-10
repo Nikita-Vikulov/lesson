@@ -9,10 +9,11 @@ object ApiHolder {
     val apiService:GithubUsersService by lazy {
         val gson = GsonBuilder()
             .excludeFieldsWithoutExposeAnnotation()
+            .setLenient()
             .create()
 
         Retrofit.Builder()
-            .baseUrl("https://api.github.com")
+            .baseUrl("https://www.reddit.com")
             .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
             .addConverterFactory(GsonConverterFactory.create(gson))
             .build()

@@ -28,7 +28,7 @@ class OnlyUserPresenter(
 
         override fun bindView(view: ReposRVAdapter.ViewHolder) {
             val repo = repos[view.pos]
-            view.showRepo(repo.name.orEmpty())
+            view.showRepo(repo.listing.orEmpty())
         }
     }
 
