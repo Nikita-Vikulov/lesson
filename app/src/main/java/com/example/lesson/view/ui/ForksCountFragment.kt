@@ -46,7 +46,7 @@ class ForksCountFragment : MvpAppCompatFragment(), UsersView, BackButtonListener
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val gitForks = arguments?.getParcelable<GithubRepo>("FORKS_COUNT")
-        binding?.forksCount?.text = "forks count :" + gitForks?.forksCount //+ " test userName"
+        binding?.forksCount?.text = "forks count :" + gitForks?.data //+ " test userName"
     }
 
 

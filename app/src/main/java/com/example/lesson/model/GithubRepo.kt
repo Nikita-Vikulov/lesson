@@ -9,20 +9,20 @@ import kotlinx.android.parcel.Parcelize
 class GithubRepo(
 
     @Expose
-    @SerializedName("login")
-    val login: String? = null,
+    @SerializedName("kind")
+    val kind: String? = null,
 
     @Expose
-    val id: Long? = null,
+    val url: Long? = null,
 
     @Expose
-    @SerializedName("name")
-    val name: String? = null,
+    @SerializedName("Listing")
+    val listing: String? = null,
 
     @Expose
-    @SerializedName("forks")
-    val forksCount: String? = null,
+    @SerializedName("data")
+    val data: String? = null,
 
-) : Parcelable {
-    fun getRepo() = ApiHolder.apiService.getRepo("/users/${login}/repos")
+    ) : Parcelable {
+    fun getRepo() = ApiHolder.apiService.getRepo("/r/aww/hot.json")
 }
